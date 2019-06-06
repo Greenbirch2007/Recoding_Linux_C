@@ -1,0 +1,13 @@
+
+gedit 安装
+
+
+sudo apt-get install update
+
+
+sudo apt-get install gedit
+
+
+touch test.c
+
+gedit test.c
