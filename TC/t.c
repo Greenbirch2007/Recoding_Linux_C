@@ -1,7 +1,17 @@
 #include <stdio.h>
 
+void butler(void);
+
 int main(void)
 {
-	printf("C语言开始~ \n");
-	return 0;
+    printf("I will summon the butler function \n");
+    butler();
+
+    printf("Yes,bring~~~\n");
+    return 0;
+}
+
+void butler(void)
+{
+    printf("You rang,sir? \n");
 }
