@@ -1,14 +1,22 @@
 #include<stdio.h>
+
 int main()
 {
-	int i,j, result;
-	for(i=9;i>=1;i++)
-	{
-		for(j=1;j<=i;j++)
-		{
-			printf("%d * %d = %d",i,j,result=i*j);
-		}
-		printf("\n");
-	}
+	char cChar1;
+	char cChar2;
+	int iInt1;
+	int iInt2;
+
+	cChar1='a';
+	cChar2=97;
+	iInt1='a';
+	iInt2=97;
+
+
+	printf("%c\n",cChar1);
+	printf("%d\n",cChar2);
+	printf("%c\n",iInt1);
+	printf("%d\n",iInt2);
 	return 0;
 }
+		
