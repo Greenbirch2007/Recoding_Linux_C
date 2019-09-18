@@ -350,3 +350,59 @@ putchar(ch);
 
 使用putchar函数时，一定要在程序或文件的开头加上编译预处理名 #include<stdio.h>
 
+
+
+第4章  选择结构程序设计
+
+if(表达式)
+	语句
+
+
+
+if(表达式)
+	语句1；
+else
+	语句2；
+
+
+
+if-else-if形式
+
+if(表达式1)
+	语句1；
+else if(表达式2)
+	语句2；
+	else if(表达式3)
+	语句3；
+
+
+处理多个分支的情况
+
+if语句的嵌套
+
+if(表达式)
+	if语句；
+
+或
+
+if(表达式)
+	if语句；
+else
+if语句；
+
+c语言规定else总是与它前面最近的if配对
+
+
+用switch实现多分支
+
+
+switch(表达式)
+{
+case 常量表达式1：语句1；
+
+default:语句n+1;
+}
+
+
+c语言还提供了一种break语句，专用于跳出switch语句，break语句没有参数
+
