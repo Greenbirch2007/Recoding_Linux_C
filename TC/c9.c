@@ -1,12 +1,22 @@
 #include<stdio.h>
 
-int main()
+long ff(int n)
 {
-	int *pInt;
-	pInt =(int*)malloc(sizeof(int));
+	long f;
+	if(n<0)
+	printf("n<0 ,input error")
+	else if (n==0 || n==1) f=1;
+	else f= ff(n-1) * n;
+	return f;
+}
 
-	*pInt=100;
-	printf("the number is: %d\n",*pInt);
-	free(pInt);
-	return 0;
+
+void main()
+{
+	int n;
+	long y;
+	printf("input a inteager number: \n");
+	scanf("%d",&n);
+	y=ff(n);
+	printf("%d!=%ld",n,y);
 }
