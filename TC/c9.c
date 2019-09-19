@@ -1,22 +1,20 @@
 #include<stdio.h>
 
-long ff(int n)
-{
-	long f;
-	if(n<0)
-	printf("n<0 ,input error")
-	else if (n==0 || n==1) f=1;
-	else f= ff(n-1) * n;
-	return f;
-}
-
-
 void main()
 {
-	int n;
-	long y;
-	printf("input a inteager number: \n");
-	scanf("%d",&n);
-	y=ff(n);
-	printf("%d!=%ld",n,y);
+	int k=4,m=1,p;
+	int func(int,int);
+	p= func(k,m);
+	printf("%d,",p);
+	p=func(k,m);
+	printf("%d\n",p);
 }
+
+int func(int a,int b)
+{
+	static int m=0,i=2;
+	i += m+1;
+	m =i+a+b;
+	return m;
+}
+
