@@ -1,12 +1,18 @@
 #include<stdio.h>
 
-int main()
+typedef struct
 {
-	char *num[5] = {"wer","wer","asdf","er","wer"};
-	int i;
-	char **p;
-	p=num;
-	for(i=0;i<6;i++)
-	printf("%s\n",*(p+i));
-	return 0;
+	char a[10];
+	int b;
+} AB;
+
+getdata(AB *p)
+{
+	scanf("%s%d,p->a,&p->b");
 }
+
+void main()
+{
+	AB s;;
+	getdata(&s);
+	printf("%s,%d\n",s.a,s.b);}
