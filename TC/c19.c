@@ -1,14 +1,38 @@
 #include<stdio.h>
 #include<string.h>
+#include<stdlib.h>
 
-int main(void)
+void swap(char *str,int i,int j)
 {
-	char msg[] = "Hello world";
-	int i =0;
-while (msg[i] &&(i<strlen(msg)))
+	char c;
+	c =str[i];str[i]=str[j];str[j] =c;
+}
+
+void permutation(char *str,int start,int end)
 {
-	fputc(msg[i],stdout);
-	i++;
+	if(start<end)
+	{
+		if(start+1 == end)
+		{
+			printf("%s\n",str);
+		}
+		else{
+			int i;
+			for(i=start,i<end;i++)
+			{
+				swap(str,start,i);
+				permutation(str,start+1,end);
+				swap(str,start,i);
+			}
+		}
+	}
 }
-return 0;
+
+int main()
+{
+	char s[] ="abcd";
+	permutation(s,0,strlen(s));
+	return 0;
 }
+
+
