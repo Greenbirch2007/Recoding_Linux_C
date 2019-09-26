@@ -219,8 +219,383 @@ free(str); // 释放str指向的堆内存块
 １．通过指针访问数组元素
 
 
-在c程序中，常利用指针访问数组元素，数组名就是数组在内存中的首地址，
-即数组中第一个元素的地址。可以通过访问喜爱报
+在c程序中，常利用指针访问数组元素，数组名就是数组内存中的首地址，
+即数组中第一个元素的地址。可以通过下标访问数组元素，也可以通过指针访问数组元素
 
 
+int arr[5]= {10,20,30,40,50};
+int *ptr =arr; // ptr的值为数组空间的首地址，或ptr指向arr数组的第一个元素
+
+
+数组arr的元素可以用*ptr,*p(ptr+1),*(ptr+2),*(ptr+3)来引用
+
+数组名是常量指针，数组名的值不能改变，因为arr++是错误的，而ptr++是允许的
+通过修改指针ptr来访问数组中的每个元素
+
+for(ptr=arr;ptr<arr+5;ptr++)
+	printf("%d\n",*ptr);
+
+一般情况下，一个int型变量占用４个字节的内存空间，一个char型变量占用一个字节的空间
+所以str是字符指针的话，str++就使得str指向下一个字符，
+而整型指针ptr++则使得ptr指向下一个int型整数，即指向数组的第二个元素
+
+
+可以用指针访问二维数组元素。例如，对于一个m行，n列的二维整型数组
+
+int a[m][n];
+
+由于二维二数组元素在内存中以线性方式存储的，且按行存放，所以用指针访问二维数组的关键你
+是如何计算出某个二维数组在内存中的地址。
+二维数组a的元素a[i][j](i<m,j<n)
+在内存中的地址应为数组空间首地址加上a[i][j]之前的元素所占空间形成的偏移量，
+概念上表示为a+(ixn+j)*sizeof(int)
+
+在程序中需要表示为(&a[0][0]+iｘ n+j)
+
+2.通过指针访问字符串常量
+
+可将指针设置为指向字符串常量(存储在只读存储区域)，通过指针读取字符串或其中的字符
+
+char *str="hello";
+printf("%s\n",str); // 输出字符串"hello"
+printf("%c\n",str[1]); // 输出字符'e'
+
+
+
+不允许在程序运行过程中修改字符串常量。
+例如，下面试图通过修改字符串的第２个字符将"hello"改为"hallo",
+
+程序运行时该操作导致异常，原因是str指向的是字符串常量"hello",
+该字符串在运行时不能被修改
+
+char *str="hello";
+str[1] = 'a'; // 运行时异常
+
+
+如果用const进行修饰，这个错误在编译阶段就能检查出来
+
+const char *str="hello";
+str[1] = 'a'; //编译时报错
+
+
+３．指针数组
+
+如果数组的元素类型是指针类型，则称为　指针数组，下面的ptrarr是一维数组，
+数组元素是指向整型变量的指针
+
+int a,b,c,d;
+int *ptrarr[5] = {NULL,&a,&b,&c,&d};
+
+
+如需要动态生成二维整型数组，则传统的处理方式是先生成一二指针数组arr2,
+然后把每个指针初始化为动态分配的"行"
+
+int(**arr2) = (int**)malloc(rows*sizeof(int*));
+
+for(i=0;i<rows;i++)
+{
+	arr2[i] = (int*)malloc(columns*sizeof(int));
+
+
+4.指针运算
+
+在ｃ程序中，让指针变量加一个整数或减一个整数的含义与指针指向的对象有关，
+也就是与指针所指向的变量所占用存储空间的大小有关
+
+int arr[5] ={10,20,3,4,5};
+
+int twoarr[2][3] = {{1,2,3},{4,5,6}};
+
+int *ptr1= arr; // 指针变量ptr1指向的对象是一个整数
+int (*ptr2)[3] = twoarr; //  指针变量ptr2指向的对象是含３个元素的一维数组
+
+ptr1 = ptr1+1; // ptr1指向下一个整数
+
+printf("%d\n",*ptr1) ; //输出２０
+
+ptr2= ptr2+1; //ptr２指向下一个含3个元素的一维数组(二维数组的第二行)
+
+printf("%d\n",**ptr2); // 输出４０
+
+
+５．　常量指针与指针常量
+
+常量指针是指针指向的对象是常量，即指针变量可以修改，但不能通过指针来修改其指向的对象
+
+int a=1;
+const int *p = &d; // const修饰的是int对象　，等效的定义为int const  *p= &d;
+
+*p =2; // 编译时报错
+d =2; //正确，变量d可以修改
+
+指针常量是指针本身是个常量，不能再指向其他对象
+
+
+在定义指针时，如果在指针变量前加一个const修饰符，就定义了一个指针常量，
+即指针值是不能修改的
+
+int d=1;
+int *const p = &d; // const修饰的是指针p,p不能再修改
+
+
+p是一个指针常量，初始化时它指向整型变量d.
+p本身不能修改(即p不能再指向其他对象)，但所指向变量的内容却可以修改，如　*p =2 ,也就是d=2
+
+区分常量指针和指针常量的关键是"*"的位置
+
+const 与*  左，常量指针　　右，指针常量
+
+如果将"*"读作指针，const读作常量，内容正好符合
+
+int const *p ;  ,p为常量指针
+int *const p; p　为指针常量
+
+９．４．３　指针与函数
+
+指针可以作为函数的参数或返回值
+
+１．指针作为函数参数
+
+
+用指针作为函数的参数可以在进行函数调用时，通过指针来改变调用函数中实参变量的值
+
+void swap(int *pa, int *pb)
+{
+	int temp =*pa;
+	*pa=*pb;
+	*pb = temp;
+}
+
+
+若存在函数调用swap(&x,&y),则swap函数执行后两个实参x和y的值被交换。
+函数中参与运算的值不是pa,pb本身，而是它们所指向的变量，也就是实参x,y(*pa与x,*pb与ｙ所表示的对象相同)
+
+在调用函数中，是把实参的地址传送给形参，即传送&x和&y,
+在swap函数中指针pa和pb并没有被修改
+
+
+如果在被调用函数中修改了指针参数的值，则不能实现实参变量的修改。
+
+下面函数get_str中的错误是将指针p指向的目标修改了，从而在main中调用get_str后，
+ptr的值仍然是NULL
+
+void get_str(char *p)
+{
+	p = (char*)malloc(sizeof("testing"));
+	strcpy(p,"testing");
+}
+
+int main()
+{
+	char *ptr =NULL;
+	get_str(ptr);
+	if(ptr) printf("%s\n",ptr);//输出ptr所指字符串的值
+	return 0;
+}
+
+
+修改上述函数
+
+void get_str(char **p)
+{
+	*p = (char*)malloc(sizeof("tesing"));
+	strcpy(*p,"tesing");
+}
+
+
+函数调用为:get_str(&ptr);
+
+以数组作为函数参数时，本质上是将数组空间的首地址传递给形参，在被调用函数中
+对数组元素的修改就可以保留下来
+
+用const修改函数参数，可以避免在被调用函数中出现不当的修改
+
+void strcpy(char *to,const char *from);
+
+
+其中，from是输入参数，to是输出参数，
+如果在函数strcpy内通过from来修改其指向的字符(如*from='a'),编译时将报错
+
+
+若需要指针参数在函数内不能修改为指向其他对象，则可如下修饰指针参数
+
+void swap(int *const p1,int *const p2);
+
+
+2.指针作为函数的返回值
+
+
+函数的返回值也可以是一个只恨，返回指针值的函数的一般形式为
+
+数据类型 *函数名(参数表列);
+
+如下进行函数定义和调用，可以降低函数参数的复杂性
+
+char *get_str(void)
+{
+	char *p =(char*)malloc(sizeof("tesing"));
+	strcpy(p,"tesing");
+	return p;
+}
+
+
+函数调用为：　ptr=get_str()；
+
+注意，不能将具有局部作用域的变量的地址作为函数的返回值。
+这是因为局部变量的内存空间在函数返回后即被释放，而该变量也不再有效
+
+
+下面函数被调用后，变量a的生存期结束，其地址不再有效
+
+
+int *example()
+{
+	int a=10;
+	return &a;
+}
+
+
+3. 函数指针
+
+在c程序中，可以将函数地址保存在函数指针变量中，然后用该指针间接调用函数
+
+int(*Compare)(const char*,const char*);
+
+该语句定义了一个名称为Compare的函数指针变量，它能用于保存任何有两个常量
+字符指针形参，返回整型值的函数的地址(函数的地址通常用函数名表示)
+例如，Compare可以指向字符换运算函数库中的函数strcmp
+
+
+Compare= & strcmp; //Compare指向strcmp函数，&运算符可以省略
+
+即Compare= strcmp;
+
+
+函数指针也可以在定义时初始化
+
+
+int (*Compare)(const char*,const char*) =strcmp;
+
+将函数地址赋给函数指针时，其参数和类型必须匹配
+
+若有函数int strcmp(const char*,const char*);
+则strcmp能被直接调用，也能通过Compare被间接调用
+
+
+strcmp("Tim","Tom"); // 直接调用
+(*Compare)("Tim","Tom"); //间接调用
+Compare("Tim","Tom"); //间接调用
+
+
+下面的程序代码中，由函数声明"int f1(int(*f)(int));" 可知调用函数f1时，实参
+应该是函数名或函数指针，且该函数(或函数指针指向的函数)应有一个整型参数且返回值为整型，
+而f2和f3都符合这种定义的函数。因此，可以通过调用f1来分别调用f2和f3
+
+#include<stdio.h>
+
+int f1(int(*f)(int)); //函数原型，声明函数f1
+int f2(int); //函数原型，声明函数f2
+int f3(int);  //函数原型，声明函数f3
+
+
+int main()
+{
+	printf("%d\n",f1(f2)); // 调用函数f1,f2作为实参
+	printf("%d\n",f1(f3)) ; // 调用函数f1,f3作为实参
+	return 0;}
+
+int f1(int(*f)(int))
+{
+	int n=0;
+	// 通过函数指针实现含糊调用，以函数调用的返回值作为循环条件
+	while (f(n))n++;
+	return n;}
+
+int f2(int n)
+{
+	printf("f2:"); return n*n-4;
+}
+
+
+int f3(int n)
+{
+	printf("f3:"); return n-;
+}
+
+
+9.4.4  指针与剪标
+
+指针是c的精华，链表是指针的重要应用之一，创建，查找，插入和删除结点是链表上的基本运算，
+需要熟练掌握这些运算的实现过程，其关键点是指针变量和初始化和
+在链表节点间的移动处理。
+
+以元素值为整数的单链表为例，需要在定义链表中结点的类型，
+下面将其命名为Node,而LinkList是是指向Node类型变量的指针类型名
+
+
+typedef struct node {
+	int data; //结点的数据域
+	struct node *next; // 结点的指针域
+} Node,*LinkList;
+
+
+Node a,b;
+LinkList p; //等同于Node *p;
+
+a.data= 1;
+b.data=2;
+p = &a;
+p->data= 10; // 结果等同于a.data=10;
+p->next =&b; //结点a和b通过a.next链接起来
+
+
+当p指向Node类型的结点时，涉及两个指针变量:p和p->next
+
+p是指向结点的指针
+p->next是结点中的指针域
+
+1. p=p->next;之后，p指向下一个结点
+2.p->next=p; 之后，结点的指针域指向结点而已
+
+
+
+已知单链表L含有头结点，且结点中的元素值以递增的方式排列。
+下面的函数DeleteList中查找所有值大于minK 且小于maxK的元素，
+若找到，则逐个删除，同时释放被删结点的空间
+若链表中不存在满足条件的元素，则返回-1,否则返回0
+
+
+
+
+int DeleteList(LinkList,int minK,int maxK)
+{
+	// 在含头结点的单链表L中删除大于minK且小于maxK的元素
+	Node *q = L,*P=l->next; //p指向第一个元素结点
+	int delTag = 0;
+	while(p) {
+	if (p->data<= minK)
+		{q=p;p=p->next;}
+	else
+		if(p->data<maxK){//找到删除满足条件的结点
+			q->next=p->next;
+		free(p);
+		p=q->next;
+		delTag=1;
+}
+else 
+ break;
+}
+if(!delTag) return -1;
+return 0;
+}
+
+
+9.5 常见的c程序错误
+
+
+
+
+
+
+数组
 
